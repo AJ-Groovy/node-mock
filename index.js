@@ -1,8 +1,13 @@
-const express = require("express");
 
-const app = express();
+const app = require('./app');
+const config = require("./config")();
 
-app.get("/hello", (req, res) => {
-  res.send("Hello World!");
+
+app.setPostRoute('/domains', (req, res) => {
+  app.db.collection('domains').insertOne(req.body, (err, result) => {
+    if (err) res.send(err)
+
+    res.send(err)
+    console.log('saved to database')
+  })
 });
-app.listen(3000);
