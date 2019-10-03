@@ -2,21 +2,18 @@ const express = require("express");
 const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient;
 const config = require("../config")();
-
-const mongo = new MongoClient(config.db, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const db = require("../db");
 
 class App {
-  constructor(config) {
+  constructor(config, db) {
     if (!App.instance) {
       App.instance = this;
     }
 
     this.config = config;
     this.server = express();
-    this.db = {};
+    this.db = db;
+    this.clientDb;
 
     return App.instance;
   }
@@ -24,13 +21,12 @@ class App {
   async init() {
     this.setStaticFolder('templates');
     this.setBodyParser();
-    mongo.connect((err, client) => {
+    this.db.client.connect((err, client) => {
       if (err) return console.log(err);
-      this.db = client.db("mock-db");
+      this.clientDb = client.db("mock-db");
       this.server.listen(this.config.port);
       Object.freeze(this);
     })
-
 
     return this;
   }
@@ -64,7 +60,7 @@ class App {
 }
 
 
-const app = new App(config);
+const app = new App(config, db);
 app.init();
 // Object.freeze(app);
 
