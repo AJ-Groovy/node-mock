@@ -19,8 +19,10 @@
   "homepage": "https://github.com/AJ-Groovy/node-mock#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "mongoose": "^5.7.1",
+    "node-env-run": "^3.0.2",
     "nodemon": "^1.19.1"
   },
   "devDependencies": {
